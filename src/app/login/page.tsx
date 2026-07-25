@@ -58,9 +58,10 @@ function LoginForm() {
     setError(null);
 
     try {
+      const targetCallback = typeof window !== "undefined" ? `${window.location.origin}${callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : "/dashboard"}` : callbackUrl;
       const res = (await signIn.social({
         provider: "google",
-        callbackURL: callbackUrl,
+        callbackURL: targetCallback,
       })) as { data?: { url?: string }; error?: { message?: string } | null };
 
       console.log("Google Login Response:", res);
