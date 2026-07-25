@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Shield, ShieldAlert, LogOut, User as UserIcon, LayoutDashboard, Menu, X, PlusCircle, Link as LinkIcon, ShieldCheck } from "lucide-react";
+import { Shield, ShieldAlert, LogOut, User as UserIcon, LayoutDashboard, Menu, X, PlusCircle, Link as LinkIcon, ShieldCheck, ChevronDown, Mail } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -89,50 +89,59 @@ export default function Navbar() {
             <div className="h-8 w-24 animate-pulse rounded-md bg-muted" />
           ) : session?.user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="relative flex items-center gap-2.5 px-3 py-1.5 rounded-full hover:bg-accent outline-none cursor-pointer border border-border/40">
-                <Avatar className="h-7 w-7 border border-rose-500/20">
-                  <AvatarFallback className="bg-rose-500/10 text-rose-600 font-semibold text-xs">
-                    {session.user.name?.charAt(0).toUpperCase() || "U"}
+              <DropdownMenuTrigger className="relative flex items-center gap-2.5 px-3.5 py-1.5 rounded-full hover:bg-rose-500/10 outline-none cursor-pointer border border-rose-500/30 bg-muted/30 transition-all">
+                <Avatar className="h-7 w-7 border border-rose-500/40">
+                  <AvatarFallback className="bg-rose-500 text-white font-bold text-xs">
+                    {session.user.name?.charAt(0).toUpperCase() || session.user.email?.charAt(0).toUpperCase() || "U"}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col text-left">
-                  <span className="text-xs font-semibold leading-none max-w-[120px] truncate">
-                    {session.user.name}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground leading-tight max-w-[120px] truncate">
+                  {session.user.name && (
+                    <span className="text-xs font-bold leading-none max-w-[140px] truncate text-foreground">
+                      {session.user.name}
+                    </span>
+                  )}
+                  <span className="text-[11px] font-medium text-rose-500 leading-tight max-w-[170px] truncate">
                     {session.user.email}
                   </span>
                 </div>
+                <ChevronDown className="h-3.5 w-3.5 text-muted-foreground ml-0.5" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-2">
-                <DropdownMenuLabel className="flex flex-col gap-1">
-                  <span>Signed in as</span>
-                  <span className="text-xs font-normal text-muted-foreground truncate">{session.user.email}</span>
+              <DropdownMenuContent align="end" className="w-64 mt-2 p-2 shadow-xl border-border/60 rounded-xl">
+                <DropdownMenuLabel className="flex flex-col gap-1 p-2.5 bg-muted/50 rounded-lg mb-1">
+                  <span className="text-xs font-bold text-foreground">{session.user.name || "User Profile"}</span>
+                  <span className="text-xs font-mono font-medium text-rose-500 break-all flex items-center gap-1">
+                    <Mail className="h-3 w-3 shrink-0" />
+                    {session.user.email}
+                  </span>
                   {userRole === "admin" && (
-                    <Badge variant="destructive" className="w-fit text-[10px] py-0 mt-1">
+                    <Badge variant="destructive" className="w-fit text-[10px] py-0 mt-1 font-semibold">
                       Admin
                     </Badge>
                   )}
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="my-1" />
                 <Link href="/account" className="w-full">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    {t.navAccount}
+                  <DropdownMenuItem className="cursor-pointer py-2 text-xs font-medium rounded-md">
+                    <UserIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    {t.navAccount || "My Account"}
                   </DropdownMenuItem>
                 </Link>
                 {userRole === "admin" && (
                   <Link href="/admin" className="w-full">
-                    <DropdownMenuItem className="cursor-pointer text-amber-600 font-medium">
+                    <DropdownMenuItem className="cursor-pointer py-2 text-xs font-medium text-amber-500 focus:text-amber-500 rounded-md">
                       <ShieldCheck className="mr-2 h-4 w-4 text-amber-500" />
-                      {t.navAdmin}
+                      {t.navAdmin || "Admin Dashboard"}
                     </DropdownMenuItem>
                   </Link>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {t.navLogout}
+                <DropdownMenuSeparator className="my-1" />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="cursor-pointer py-2 text-xs font-bold text-rose-600 hover:bg-rose-500/10 focus:text-rose-600 focus:bg-rose-500/10 rounded-md"
+                >
+                  <LogOut className="mr-2 h-4 w-4 text-rose-600" />
+                  {t.navLogout || "Log out"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -183,15 +192,18 @@ export default function Navbar() {
           <div className="pt-3 border-t border-border">
             {session?.user ? (
               <div className="space-y-2">
-                <div className="flex items-center gap-3 px-3 py-1">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-rose-500/10 text-rose-600">
-                      {session.user.name?.charAt(0).toUpperCase() || "U"}
+                <div className="flex items-center gap-3 px-3 py-2 bg-muted/40 rounded-lg">
+                  <Avatar className="h-8 w-8 border border-rose-500/40">
+                    <AvatarFallback className="bg-rose-500 text-white font-bold">
+                      {session.user.name?.charAt(0).toUpperCase() || session.user.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="text-xs font-semibold">{session.user.name}</span>
-                    <span className="text-[10px] text-muted-foreground">{session.user.email}</span>
+                    <span className="text-xs font-bold">{session.user.name}</span>
+                    <span className="text-[11px] font-medium text-rose-500 flex items-center gap-1">
+                      <Mail className="h-3 w-3 shrink-0" />
+                      {session.user.email}
+                    </span>
                   </div>
                 </div>
                 <Link
@@ -215,7 +227,7 @@ export default function Navbar() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-rose-600 hover:bg-rose-700"
                   onClick={() => {
                     setMobileMenuOpen(false);
                     handleSignOut();

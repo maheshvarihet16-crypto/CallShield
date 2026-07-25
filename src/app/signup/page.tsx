@@ -64,17 +64,26 @@ function SignupForm() {
     setError(null);
 
     try {
-      const res = await signIn.social({
+      const res = (await signIn.social({
         provider: "google",
         callbackURL: callbackUrl,
-      });
+      })) as { data?: { url?: string }; error?: { message?: string } | null };
+
+      console.log("Google Signup Response:", res);
+
+      if (res?.data?.url) {
+        window.location.href = res.data.url;
+        return;
+      }
 
       if (res?.error) {
-        setError("Google OAuth is not configured yet. Please set GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET in .env.local, or use Email/Password sign up below.");
+        const errMessage = res.error.message || "Google signup failed. Please try again.";
+        setError(`Google signup error: ${errMessage}`);
         setGoogleLoading(false);
       }
     } catch (err: unknown) {
-      setError("Google OAuth requires GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env.local. Please use Email/Password sign up for testing.");
+      const message = err instanceof Error ? err.message : "Google OAuth failed. Please check your connection.";
+      setError(`Google OAuth error: ${message}`);
       setGoogleLoading(false);
     }
   };

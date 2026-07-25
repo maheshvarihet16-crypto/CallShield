@@ -1,16 +1,30 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+dotenv.config();
+
+import dns from "dns";
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch {
+  // Ignore
+}
+
 import mongoose from "mongoose";
 import { User } from "../src/models/User";
 import { NumberModel } from "../src/models/Number";
 import { Report } from "../src/models/Report";
 import { LinkScan } from "../src/models/LinkScan";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/callshild";
+const rawUri = process.env.MONGODB_URI;
+const MONGODB_URI =
+  rawUri && !rawUri.includes("<db_password>") && !rawUri.includes("<password>")
+    ? rawUri
+    : "mongodb://localhost:27017/callshild";
 const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || "callshild";
 
 async function seed() {
   console.log("🌱 Connecting to MongoDB for seeding...");
-  console.log(`URI: ${MONGODB_URI}`);
+  console.log(`URI: ${MONGODB_URI.replace(/:([^@]+)@/, ":*****@")}`);
 
   try {
     await mongoose.connect(MONGODB_URI, { dbName: MONGODB_DB_NAME });
