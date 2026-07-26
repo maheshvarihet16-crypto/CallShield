@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ShieldAlert, ShieldCheck, PhoneCall, Link as LinkIcon, Globe2, ArrowRight, Zap, Phone, ExternalLink } from "lucide-react";
 import LookupSearchBar from "@/components/LookupSearchBar";
 import LiveThreatTicker from "@/components/LiveThreatTicker";
+import OtpSafetyChecker from "@/components/OtpSafetyChecker";
 import ScamSafetyQuiz from "@/components/ScamSafetyQuiz";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -124,6 +125,11 @@ export default function Home() {
               {t.featureLangDesc}
             </p>
           </div>
+        </section>
+
+        {/* OTP Safety & Fraud Checker Section */}
+        <section className="pt-4 max-w-4xl mx-auto">
+          <OtpSafetyChecker />
         </section>
 
         {/* Interactive Cyber Safety Score Quiz Section */}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Shield, ShieldAlert, LogOut, User as UserIcon, LayoutDashboard, Menu, X, PlusCircle, Link as LinkIcon, ShieldCheck, ChevronDown, Mail } from "lucide-react";
+import { Shield, ShieldAlert, LogOut, User as UserIcon, LayoutDashboard, Menu, X, PlusCircle, Link as LinkIcon, ShieldCheck, ChevronDown, Mail, KeyRound } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -34,6 +34,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: t.navHome, href: "/", icon: Shield },
+    { name: "OTP Shield", href: "/otp-check", icon: KeyRound },
     { name: t.navReport, href: "/report", icon: PlusCircle },
     { name: t.navScan, href: "/scan-link", icon: LinkIcon },
     { name: t.navDashboard, href: "/dashboard", icon: LayoutDashboard },
