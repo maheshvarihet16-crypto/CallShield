@@ -28,13 +28,7 @@ export default function LookupSearchBar({ initialValue = "" }: { initialValue?: 
     setError("");
 
     const targetUrl = `/number/${encodeURIComponent(sanitized)}`;
-
-    if (!session?.user) {
-      // Redirect to login first with callbackUrl
-      router.push(`/login?callbackUrl=${encodeURIComponent(targetUrl)}`);
-    } else {
-      router.push(targetUrl);
-    }
+    router.push(targetUrl);
   };
 
   return (

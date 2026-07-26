@@ -22,7 +22,12 @@ interface NumberPageProps {
 
 export default async function NumberPage({ params }: NumberPageProps) {
   const resolvedParams = await params;
-  const rawPhone = decodeURIComponent(resolvedParams.phone);
+  let rawPhone = resolvedParams.phone;
+  try {
+    rawPhone = decodeURIComponent(resolvedParams.phone);
+  } catch {
+    // Fallback if URI decoding fails
+  }
   const cleanPhone = rawPhone.trim().replace(/\s+/g, "");
 
   const session = await getSession();
