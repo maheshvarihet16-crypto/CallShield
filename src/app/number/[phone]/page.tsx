@@ -26,9 +26,6 @@ export default async function NumberPage({ params }: NumberPageProps) {
   const cleanPhone = rawPhone.trim().replace(/\s+/g, "");
 
   const session = await getSession();
-  if (!session?.user) {
-    redirect(`/login?callbackUrl=/number/${encodeURIComponent(cleanPhone)}`);
-  }
 
   let numberDoc: { _id: mongoose.Types.ObjectId | string; isSpoofedFlag?: boolean } | null = null;
   let reports: Array<{
