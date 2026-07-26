@@ -3,12 +3,14 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { MongoClient } from "mongodb";
 import dns from "dns";
 
-// Fix Windows DNS SRV lookup issues for MongoDB Atlas
-try {
-  dns.setDefaultResultOrder("ipv4first");
-  dns.setServers(["8.8.8.8", "1.1.1.1"]);
-} catch {
-  // Ignore in environments where setting DNS servers is restricted
+// Fix Windows DNS SRV lookup issues for MongoDB Atlas locally
+if (!process.env.VERCEL && typeof process !== "undefined" && process.platform === "win32") {
+  try {
+    dns.setDefaultResultOrder("ipv4first");
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  } catch {
+    // Ignore in environments where setting DNS servers is restricted
+  }
 }
 
 const mongodbUri = process.env.MONGODB_URI;
