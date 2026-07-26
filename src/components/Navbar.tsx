@@ -50,10 +50,16 @@ export default function Navbar() {
             <ShieldAlert className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-red-600 via-rose-500 to-amber-500 bg-clip-text text-transparent">
-              CallShield
-            </span>
-            <span className="text-[10px] font-medium text-muted-foreground -mt-1">
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-red-600 via-rose-500 to-amber-500 bg-clip-text text-transparent">
+                CallShield
+              </span>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                Phase 2 Live
+              </span>
+            </div>
+            <span className="text-[10px] font-medium text-muted-foreground -mt-0.5">
               Scam & Phishing Guard
             </span>
           </div>

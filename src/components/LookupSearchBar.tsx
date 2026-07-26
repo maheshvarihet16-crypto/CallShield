@@ -6,10 +6,13 @@ import { Search, ShieldAlert, PhoneCall, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { useSession } from "@/lib/auth-client";
+
 export default function LookupSearchBar({ initialValue = "" }: { initialValue?: string }) {
   const [phoneNumber, setPhoneNumber] = useState(initialValue);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { data: session } = useSession();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,10 +23,18 @@ export default function LookupSearchBar({ initialValue = "" }: { initialValue?: 
       return;
     }
 
-    // Format phone number to clean string (e.g. +919876543210 or 9876543210)
+    // Format phone number to clean string
     const sanitized = cleaned.replace(/\s+/g, "");
     setError("");
-    router.push(`/number/${encodeURIComponent(sanitized)}`);
+
+    const targetUrl = `/number/${encodeURIComponent(sanitized)}`;
+
+    if (!session?.user) {
+      // Redirect to login first with callbackUrl
+      router.push(`/login?callbackUrl=${encodeURIComponent(targetUrl)}`);
+    } else {
+      router.push(targetUrl);
+    }
   };
 
   return (

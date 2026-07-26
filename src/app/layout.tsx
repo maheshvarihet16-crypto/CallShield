@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LanguageProvider } from "@/context/LanguageContext";
+import IncomingCallAlertModal from "@/components/IncomingCallAlertModal";
+import CallSimulatorWidget from "@/components/CallSimulatorWidget";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +25,8 @@ export default function RootLayout({
         <LanguageProvider>
           <Navbar />
           <div className="flex-1">{children}</div>
+          <IncomingCallAlertModal />
+          <CallSimulatorWidget />
           <footer className="border-t border-border/40 py-6 text-center text-xs text-muted-foreground">
             <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <span>© {new Date().getFullYear()} CallShield. Community Scam Prevention.</span>

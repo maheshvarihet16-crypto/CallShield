@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth-session";
 import { ShieldCheck, AlertTriangle, PlusCircle, ArrowLeft, Calendar, MapPin, Tag, Globe, MessageSquare } from "lucide-react";
 import connectToDatabase from "@/lib/db";
 import { NumberModel } from "@/models/Number";
@@ -22,6 +24,11 @@ export default async function NumberPage({ params }: NumberPageProps) {
   const resolvedParams = await params;
   const rawPhone = decodeURIComponent(resolvedParams.phone);
   const cleanPhone = rawPhone.trim().replace(/\s+/g, "");
+
+  const session = await getSession();
+  if (!session?.user) {
+    redirect(`/login?callbackUrl=/number/${encodeURIComponent(cleanPhone)}`);
+  }
 
   let numberDoc: { _id: mongoose.Types.ObjectId | string; isSpoofedFlag?: boolean } | null = null;
   let reports: Array<{

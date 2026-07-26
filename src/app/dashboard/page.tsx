@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth-session";
 import { getDashboardStats } from "@/lib/getDashboardStats";
 import CategoryChart from "@/components/CategoryChart";
 import { LayoutDashboard, PhoneCall, FileText, Link as LinkIcon, MapPin, BarChart2, Globe, MessageSquare, ArrowRight, ShieldAlert } from "lucide-react";
@@ -8,6 +10,11 @@ import { Badge } from "@/components/ui/badge";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
+  const session = await getSession();
+
+  if (!session?.user) {
+    redirect("/login?callbackUrl=/dashboard");
+  }
   const {
     totalNumbers,
     totalReports,

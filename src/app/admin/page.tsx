@@ -4,7 +4,8 @@ import Link from "next/link";
 import connectToDatabase from "@/lib/db";
 import { Report } from "@/models/Report";
 import { User } from "@/models/User";
-import AdminModerationPanel, { AdminReportItem } from "@/components/AdminModerationPanel";
+import AdminDashboardContainer from "@/components/AdminDashboardContainer";
+import { AdminReportItem } from "@/components/AdminModerationPanel";
 import { ShieldCheck, AlertTriangle, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -78,12 +79,13 @@ export default async function AdminPage() {
             Admin Moderation Panel
           </h1>
           <p className="text-sm text-muted-foreground">
-            Internal moderation tool for approving, unflagging, or deleting reported scam entries
+            Internal moderation tool for managing reported scam entries and tracking MongoDB user login sessions
           </p>
         </div>
       </div>
 
-      <AdminModerationPanel initialReports={reports} />
+      <AdminDashboardContainer reports={reports} />
     </div>
   );
 }
+
